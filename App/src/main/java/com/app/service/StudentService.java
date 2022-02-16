@@ -13,7 +13,7 @@ import com.app.entity.Student;
 @Service
 public class StudentService {
 
-	static Map<Integer,Student> studentMap = null;
+	static Map<Integer,Student> studentMap;
 	static {
 		studentMap = new HashMap();
 		studentMap.put(101, new Student(101, "Mahesh", "hyderbad"));
@@ -41,6 +41,30 @@ public class StudentService {
 		Student responseStudent = (Student) studentMap.get(student.getId());
 		
 		return "Student is saved with id :"+responseStudent.getId();
+	}
+
+
+	public Student updateStudentDetails(Student student) {
+		
+		if(studentMap.containsKey(student.getId())) {
+			studentMap.put(student.getId(),student);
+		}
+		
+		Student updatedResponse = studentMap.get(student.getId());
+		
+		return updatedResponse;
+	}
+
+
+	public String deleteStudent(Integer id) {
+		
+		if(studentMap.containsKey(id)) {
+			studentMap.remove(id);
+			return "Student is delete with id :"+id;
+		}
+			
+		return "Student is not avaliable with id :"+id;
+		
 	}
 
 }
