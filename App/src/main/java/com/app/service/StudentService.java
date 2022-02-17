@@ -6,13 +6,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.app.entity.Student;
+import com.app.repository.StudentRepo;
 
 @Service
 public class StudentService {
 
+	@Autowired
+	private StudentRepo studentRepo;
+	
+	@Value("${student.school}")
+	private String school;
+	
 	static Map<Integer,Student> studentMap;
 	static {
 		studentMap = new HashMap();
@@ -24,23 +33,29 @@ public class StudentService {
 	
 	public List getStudentList() {
 		
-		List responseList = new ArrayList<>();
+		/*
+		 * List responseList = new ArrayList<>();
+		 * 
+		 * for(Map.Entry<Integer,Student> entry: studentMap.entrySet()) {
+		 * responseList.add(entry.getValue()); }
+		 */		
+		List studentList = studentRepo.findAll();
 		
-		for(Map.Entry<Integer,Student> entry: studentMap.entrySet()) {
-			responseList.add(entry.getValue());
-		}
-		
-		return responseList;
+		return studentList;
 	}
 
 
 	public String saveStudentDetails(Student student) {
 	
-		studentMap.put(student.getId(), student);
+		//studentMap.put(student.getId(), student);
 		
-		Student responseStudent = (Student) studentMap.get(student.getId());
+		//Student responseStudent = (Student) studentMap.get(student.getId());
 		
-		return "Student is saved with id :"+responseStudent.getId();
+		student.setSchool(school);
+		studentRepo.save(student);
+		
+		
+		return "Student is saved with id :"+student.getId();
 	}
 
 
