@@ -3,6 +3,7 @@ package com.app.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,10 +23,10 @@ public class StudentController {
 	@Autowired
 	private StudentService studentService;
 	
-	@GetMapping("/")
-	public String welcomePage() {
-		return "Welcome to student services.";
-	}
+	/*
+	 * @GetMapping("/") public String welcomePage() { return
+	 * "Welcome to student services."; }
+	 */
 	
 	@GetMapping("/students")
 	public ResponseEntity getStudentList() {
@@ -44,9 +45,6 @@ public class StudentController {
 		Student studentResponse	= studentService.updateStudentDetails(student);
 		return new ResponseEntity<Student>(studentResponse, HttpStatus.OK);
 	}
-	
-	// http://localhost:8080/update?name=raju   : query params
-	// http://localhost:8080/deleteStudent/105  : path variables
 	
 	@DeleteMapping("/deleteStudent/{id}")
 	public ResponseEntity<String> deleteStudent(@PathVariable("id") Integer id) {

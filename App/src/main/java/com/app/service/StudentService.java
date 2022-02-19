@@ -22,14 +22,12 @@ public class StudentService {
 	@Value("${student.school}")
 	private String school;
 	
-	static Map<Integer,Student> studentMap;
-	static {
-		studentMap = new HashMap();
-		studentMap.put(101, new Student(101, "Mahesh", "hyderbad"));
-		studentMap.put(102, new Student(102, "ravi", "chennai"));
-		studentMap.put(103, new Student(103, "Mahesh", "hyderbad"));
-	}
-	
+	/*
+	 * static Map<Integer,Student> studentMap; static { studentMap = new HashMap();
+	 * studentMap.put(101, new Student(101, "Mahesh", "hyderbad"));
+	 * studentMap.put(102, new Student(102, "ravi", "chennai")); studentMap.put(103,
+	 * new Student(103, "Mahesh", "hyderbad")); }
+	 */
 	
 	public List getStudentList() {
 		
@@ -61,23 +59,28 @@ public class StudentService {
 
 	public Student updateStudentDetails(Student student) {
 		
-		if(studentMap.containsKey(student.getId())) {
-			studentMap.put(student.getId(),student);
-		}
+		/*
+		 * if(studentMap.containsKey(student.getId())) {
+		 * studentMap.put(student.getId(),student); }
+		 * 
+		 * Student updatedResponse = studentMap.get(student.getId());
+		 */
 		
-		Student updatedResponse = studentMap.get(student.getId());
+		Student studentResponse =  studentRepo.save(student);
 		
-		return updatedResponse;
+		return studentResponse;
 	}
 
 
 	public String deleteStudent(Integer id) {
 		
-		if(studentMap.containsKey(id)) {
-			studentMap.remove(id);
-			return "Student is delete with id :"+id;
-		}
+		/*
+		 * if(studentMap.containsKey(id)) { studentMap.remove(id); return
+		 * "Student is delete with id :"+id; }
+		 */
 			
+		studentRepo.deleteById(id);
+		
 		return "Student is not avaliable with id :"+id;
 		
 	}
