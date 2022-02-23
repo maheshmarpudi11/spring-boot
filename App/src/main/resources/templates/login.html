@@ -10,8 +10,10 @@
 	<div align="center">
 		<h3> Login Page</h3>	
 		<form action="#" th:action="@{/login}"  th:object="${user}" method="post">
-			<label>UserName</label> <input type="text" th:field="*{username}" /> </br> </br>
-			<label>Password</label> <input type="text" th:field="*{password}" /> </br> </br>
+			<label>UserName</label> <input type="text" th:field="*{username}" /> 
+			<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span> </br> </br>
+			<label>Password</label> <input type="text" th:field="*{password}" />
+			<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span> </br> </br>
 			<input type="submit" Value="LOGIN"/> 
 		</form>
 		<h1 th:text="${message}"></h1>

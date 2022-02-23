@@ -1,11 +1,12 @@
 package com.app.entity;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 public class User {
 	
+	@NotEmpty
 	private String username;
+	@NotEmpty
 	private String password;
 	
 	public User() {

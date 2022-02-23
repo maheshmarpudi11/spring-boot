@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
 @Entity
+//@Table(name = "T_STUDENT")
 public class Student {
 	
 	@Id
