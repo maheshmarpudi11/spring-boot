@@ -85,4 +85,17 @@ public class StudentService {
 		
 	}
 
+
+	public List<Student> getStudentsWithName(String name) {
+		
+		
+		return studentRepo.getStudentsWithName(name);
+	}
+
+
+	public Student getStudentById(Integer id) {
+
+		return studentRepo.findById(id).get();
+	}
+
 }

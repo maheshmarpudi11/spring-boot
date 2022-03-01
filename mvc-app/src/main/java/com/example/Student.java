@@ -2,25 +2,24 @@ package com.example;
 
 public class Student {
 	
-	private long id;
+	private Integer id;
 	private String name;
 	private String address;
 
 	public Student() {
 	
 	}
-
-	public Student(long id, String name, String address) {
-		this.id = id;
-		this.name = name;
-		this.address = address;
+	
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", name=" + name + ", address=" + address + "]";
 	}
 
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

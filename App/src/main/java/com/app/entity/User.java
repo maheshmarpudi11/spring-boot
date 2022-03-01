@@ -1,11 +1,15 @@
 package com.app.entity;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class User {
 	
 	@NotEmpty
+	@Size(min = 3,max = 6, message = "username length between 3 to 6 charaters.")
 	private String username;
+	
 	@NotEmpty
 	private String password;
 	

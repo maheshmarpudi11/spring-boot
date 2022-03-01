@@ -1,10 +1,9 @@
 package com.example;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,19 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class LoginController {
 	
-	static Map<String,Student> studentsMap = null;
-	
-	static {
-		studentsMap = new HashMap<String,Student>();
-		studentsMap.put("101",new Student(101, "Mahesh","Hyderabad"));
-		studentsMap.put("102",new Student(102, "Manoj","Hyderabad"));
-		
-	}
-	
+	@Autowired
+	public RestTemplate restTemplate;
 	
 	@GetMapping("/")
 	public String loadLoginPage(Model model) {
@@ -36,20 +29,15 @@ public class LoginController {
 	
 	@PostMapping("/userLogin")
 	public String userLogin(User user, Model model) {
-		
+
 		if(user.getUsername()!= null && user.getUsername().equals(user.getPassword())) {
 			
+			Student[] students = restTemplate.getForObject("http://localhost:9090/students", Student[].class);
+			System.out.println(students[0].toString());
 			model.addAttribute("student",new Student());
-			
-			List<Student> students = new ArrayList<Student>();; 
-			
-			for( Map.Entry<String,Student> entry :studentsMap.entrySet()) {
-				students.add(entry.getValue());
-			}
-			
 			model.addAttribute("students", students);
 				
-			return "redirect:/home";
+			return "home";
 		}
 		
 		model.addAttribute("user",new User());
@@ -59,31 +47,11 @@ public class LoginController {
 	}
 	
 
-	@RequestMapping("/home")
-	public String index(Model model) {
-		model.addAttribute("student",new Student());
-		
-		List<Student> students = new ArrayList<Student>();; 
-		
-		for( Map.Entry<String,Student> entry :studentsMap.entrySet()) {
-			students.add(entry.getValue());
-		}
-		
-		model.addAttribute("students", students);
-		
-		return "home";
-	}
-	
-	@RequestMapping(value={"save"}, method = RequestMethod.POST)
+	@RequestMapping(value={"/save"}, method = RequestMethod.POST)
 	public String saveStudent(Student student, Model model) {
-		
-		studentsMap.put(String.valueOf(student.getId()),student);
-		
-		List<Student> students = new ArrayList<Student>();; 
-		
-		for( Map.Entry<String,Student> entry :studentsMap.entrySet()) {
-			students.add(entry.getValue());
-		}
+		System.out.println("calling post service..");
+	 	restTemplate.postForObject("http://localhost:9090/createStudent", student,String.class);
+		Student[] students = restTemplate.getForObject("http://localhost:9090/students", Student[].class);
 		
 		model.addAttribute("student",new Student());
 		model.addAttribute("students", students);
@@ -94,13 +62,12 @@ public class LoginController {
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String deleteStudent(@PathVariable("id") String studentId, Model model) {
 		
-		studentsMap.remove(studentId);
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("id",studentId);
 		
-		List<Student> students = new ArrayList<Student>();; 
+		restTemplate.delete("http://localhost:9090/deleteStudent/{id}", params);
 		
-		for( Map.Entry<String,Student> entry :studentsMap.entrySet()) {
-			students.add(entry.getValue());
-		}
+		Student[] students = restTemplate.getForObject("http://localhost:9090/students", Student[].class);
 		
 		model.addAttribute("student",new Student());
 		model.addAttribute("students", students);
@@ -109,25 +76,16 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-	public String updateStudent(@PathVariable("id") String studentId, Model model) {
+	public String updateStudent(@PathVariable("id") int studentId, Model model) {
 		
-		Student updateStudent = studentsMap.get(studentId);
+		Student[] students = restTemplate.getForObject("http://localhost:9090/students", Student[].class);
+		Student updateStudent = restTemplate.getForObject("http://localhost:9090/getStudent/"+studentId, Student.class);
 		
-		List<Student> students = new ArrayList<Student>();; 
-		
-		for( Map.Entry<String,Student> entry :studentsMap.entrySet()) {
-			students.add(entry.getValue());
-		}
 		
 		model.addAttribute("student",updateStudent);
 		model.addAttribute("students", students);
 		
 		return "home";
 	}
-	
-	
-	
-	
-	
 	
 }

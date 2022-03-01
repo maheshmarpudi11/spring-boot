@@ -10,6 +10,9 @@ import com.app.entity.Student;
 
 public interface StudentRepo extends JpaRepository<Student, Integer> {
 
+	@Query("select s from Student s where s.name like '%'||:name||'%'")
+	List<Student> getStudentsWithName(String name);
+
 	
 	/*
 	 * @Query("select s from Student s where s.name = ?1 and s.age = ?2") // JPQL
