@@ -95,7 +95,7 @@ public class StudentService {
 
 	public Student getStudentById(Integer id) {
 
-		return studentRepo.findById(id).get();
+		return studentRepo.findById(id).orElse(null);
 	}
 
 }

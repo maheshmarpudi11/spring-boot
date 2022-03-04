@@ -10,7 +10,8 @@
 		</style>
 	</head>
 	<body>
-	
+		<h3 th:text="'Welcome to '+${session.activeUser}"></h3>
+
 		<div align="center">
 			<h3> Add New Student</h3>
 			<form th:object="${student}" th:action="@{/save}" action="#" method="post">

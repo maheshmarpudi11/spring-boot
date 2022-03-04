@@ -1,4 +1,4 @@
-package com.app;
+package com.example;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -34,17 +34,9 @@ public class MyErrorController implements ErrorController  {
         return "error";
     }
 
-	@Override
 	public String getErrorPath() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-    
-    
-    
-    
-    
-    
-    
-    
+   
 }
