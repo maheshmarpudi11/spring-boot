@@ -6,6 +6,10 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,7 +57,7 @@ public class LoginController {
 	
 	@PostMapping("/login")
 	public String userLogin(@Valid User user,BindingResult results, Model model) {
-
+		System.out.println("userLogin method..");
 		if(results.hasErrors()) {
 			System.out.println(results.hasErrors());
 			return "login";
@@ -65,10 +69,17 @@ public class LoginController {
 			return "login";
 		}
 		
-		Student[] students = restTemplate.getForObject("http://localhost:9090/students", Student[].class);
-		System.out.println(students[0].toString());
+		//Student[] students = restTemplate.getForObject("http://localhost:9090/students", Student[].class);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "Basic dXNlcjpwYXNzd29yZA==");
+		HttpEntity<String> entity = new HttpEntity<String>(headers);
+		
+		ResponseEntity reponse = restTemplate.exchange("http://localhost:9090/students", HttpMethod.GET, entity,Student[].class);
+		
+		//System.out.println(students[0].toString());
 		model.addAttribute("student", new Student());
-		model.addAttribute("students", students);
+		model.addAttribute("students", reponse.getBody());
 		model.addAttribute("activeUser", user.getUsername());
 
 		return "home";
