@@ -1,4 +1,4 @@
-package com.example;
+package com.example.controller;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ public class MyErrorController implements ErrorController  {
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        
+        System.out.println(status.toString());
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
         

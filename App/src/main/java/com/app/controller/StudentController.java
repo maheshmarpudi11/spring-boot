@@ -45,7 +45,7 @@ public class StudentController {
 		return new ResponseEntity<String>(message, HttpStatus.CREATED);	
 	}
 	
-	@PutMapping("/updateStudent")
+	@PutMapping(value="/updateStudent",produces = MediaType.APPLICATION_XML_VALUE )
 	public ResponseEntity<Student> updateStudentDetails(@RequestBody Student student) {
 		Student studentResponse	= studentService.updateStudentDetails(student);
 		return new ResponseEntity<Student>(studentResponse, HttpStatus.OK);

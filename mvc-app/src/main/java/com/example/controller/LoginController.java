@@ -1,4 +1,4 @@
-package com.example;
+package com.example.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,13 +21,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.security.User;
+
 @Controller
 @SessionAttributes(value = "activeUser")
 public class LoginController {
 
 	@Autowired
 	public RestTemplate restTemplate;
-
+/*
 	static Map<String, User> userMap;
 	static {
 		userMap = new HashMap<String, User>();
@@ -47,6 +49,7 @@ public class LoginController {
 		return false;
 	}
 
+*/	
 	@GetMapping("/")
 	public String loadLoginPage(Model model) {
 
@@ -63,7 +66,7 @@ public class LoginController {
 			return "login";
 		}
 		
-		if(!validateUser(user)) {
+		if(!(user != null && user.getPassword() !=null && user.getUsername() != null )) {
 			model.addAttribute("message", "invalid username/password.");
 			model.addAttribute("user", new User());
 			return "login";

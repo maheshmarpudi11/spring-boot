@@ -7,22 +7,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAnyAttribute;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 //@Table(name = "T_STUDENT")
 @JsonIgnoreProperties("school")
+//@XmlRootElement
 public class Student {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@XmlAttribute(name = "studentID")
 	private Integer id;
 	private String name;
 	private String address;
+	
+	@JsonIgnore
 	private String school;
 
 	public Student(Integer id, String name, String address) {
